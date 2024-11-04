@@ -44,6 +44,8 @@ class PdfPage extends StatelessWidget {
                   borderRadius: pw.BorderRadius.circular(20),
                   border: pw.Border.all()
                 ),
+                child: pw.Flexible(child: pw.Image(imageTest))),
+              pw.Container(
                 child: pw.Center(
                   child: pw.Column(children: [
                     pw.SizedBox(height: 30),

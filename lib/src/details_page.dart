@@ -61,21 +61,26 @@ class DetailsPage extends StatelessWidget {
     );
   }
   Future<void> _downloadImage() async {
-    try {
-      final Dio dio = Dio();
+     try {
+      if (datosImage != null) {
+        final response = await Dio().get(
+          datosImage!,
+          options: Options(responseType: ResponseType.bytes),
+        );
 
-      // Obtener el directorio temporal donde guardaremos la imagen
-      final Directory appDir = await getTemporaryDirectory();
-      final String savePath = '${appDir.path}/downloaded_image.jpg';
+        // Obtén el directorio donde guardar la imagen
+        final directory = await getApplicationDocumentsDirectory();
+        final filePath = '${directory.path}/${datosName}_image.png';
 
-      // Descargar la imagen y guardarla en la ruta especificada
-      await dio.download(datosImage!, savePath);
+        // Escribe la imagen en el archivo
+        File file = File(filePath);
+        await file.writeAsBytes(response.data);
 
-      // Almacenar la ruta de la imagen descargada
-      _path = savePath;
-      print("Image downloaded to $_path");
+        // Guarda la ruta de la imagen
+        _path = filePath;
+      }
     } catch (error) {
-      print("Error downloading image: $error");
+      print(error);
     }
   }
 }
